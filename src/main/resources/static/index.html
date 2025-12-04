@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h1>
+    Lista enemigos
+</h1>
+<table id="enemigosTable" style="display:none;">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>País</th>
+        <th>Afiliación</th>
+    </tr>
+    </thead>
+    <tbody id="enemigosBody">
+    </tbody>
+</table>
+
+<section class="formulario-container">
+    <h2>Agregar nuevo enemigo</h2>
+    <form id="formInsertarEnemigo">
+        <section class="formGroup">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" required>
+        </section>
+        <section class="formGroup">
+            <label for="pais">País</label>
+            <input type="text" id="pais" name="pais" required>
+        </section>
+        <section class="formGroup">
+            <label for="afiliacion">Afiliación</label>
+            <input type="text" id="afiliacion" name="afiliacion" required>
+        </section>
+        <button type="submit" id="btnSubmit">Agregar Enemigos</button>
+    </form>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
