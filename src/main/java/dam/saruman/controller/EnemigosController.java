@@ -36,7 +36,7 @@ public class EnemigosController {
     //Actualiza un enemigo que ya existe (PUT)
     @PutMapping("/enemigo/{id}")
     //Esta bloque coge el enemigo según el id y devuelve un json que devuelve a objeto, edita el objeto y luego lo devuelve a json y lo actualiza
-    public ResponseEntity<Enemigo> actualizarEnemigo(@PathVariable Long id, @RequestBody Enemigo enemigo) {
+    public ResponseEntity<Enemigo> actualizarEnemigo(@PathVariable String id, @RequestBody Enemigo enemigo) {
         //Optional por si el enemigo existe o no
         Optional<Enemigo> enemigoActualizado = enemigoService.actualizar(id, enemigo); //Actualiza el enemigo anterior por uno nuevo creado en base al otro
         return enemigoActualizado //Cadena de montaje que devuelve un error u otro en función de si existe o no el enemigo
@@ -46,7 +46,7 @@ public class EnemigosController {
 
     //Elimina un enemigo (DELETE)
     @DeleteMapping("/enemigo/{id}")
-    public ResponseEntity<Void> eliminarEnemigo(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarEnemigo(@PathVariable String id) {
         if (enemigoService.eliminar(id)) {
             return ResponseEntity.noContent().build(); //204 eliminado correctamente
         }

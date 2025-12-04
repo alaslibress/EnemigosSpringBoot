@@ -29,7 +29,7 @@ public class EnemigoService {
         return enemigoRepository.save(enemigo);
     }
 
-    public Optional<Enemigo> actualizar(Long id, Enemigo enemigo) {
+    public Optional<Enemigo> actualizar(String id, Enemigo enemigo) {
         if (enemigoRepository.existsById(id)) {
             enemigo.setId(id);
             return Optional.of(enemigoRepository.save(enemigo));
@@ -37,7 +37,7 @@ public class EnemigoService {
         return Optional.empty();
     }
 
-    public boolean eliminar(Long id) {
+    public boolean eliminar(String id) {
         if (enemigoRepository.existsById(id)) {
             enemigoRepository.deleteById(id);
             return true;
