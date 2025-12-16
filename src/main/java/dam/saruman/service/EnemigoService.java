@@ -25,20 +25,24 @@ public class EnemigoService {
         return enemigos;
     }
 
+    public Optional<Enemigo> obtenerPorId(String id) {
+        return enemigoRepository.findById(id);
+    }
+
     public Enemigo guardar(Enemigo enemigo) {
         return enemigoRepository.save(enemigo);
     }
 
-    public Optional<Enemigo> actualizar(Long id, Enemigo enemigo) {
-        if (enemigoRepository.existsById(id)) {
+    public Optional<Enemigo> actualizar(String id, Enemigo enemigo) {
+        if (enemigoRepository.findById(id).isPresent()) {
             enemigo.setId(id);
             return Optional.of(enemigoRepository.save(enemigo));
         }
         return Optional.empty();
     }
 
-    public boolean eliminar(Long id) {
-        if (enemigoRepository.existsById(id)) {
+    public boolean eliminar(String id) {
+        if (enemigoRepository.findById(id).isPresent()) {
             enemigoRepository.deleteById(id);
             return true;
         }
