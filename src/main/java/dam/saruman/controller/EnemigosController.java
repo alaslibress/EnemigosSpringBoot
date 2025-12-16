@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 
-//Controlador REST de soringboot que realiza las operaciones de los ENEMIGOS
+//Controlador REST de springboot que realiza las operaciones de los ENEMIGOS
 
 @RestController //Define la clase como un controlador REST, devuelve respuestas json
 @RequestMapping("/api") //Establece el prefijo por defecto para todo el controlador.
@@ -26,6 +26,15 @@ public class EnemigosController {
     public List<Enemigo> getEnemigos() {
         return enemigoService.obtenerTodos(); //Return List<Enemigo>
     }
+
+    //Obtiene un enemigo por ID (GET)
+    @GetMapping("/enemigo/{id}")
+    public ResponseEntity<Enemigo> getEnemigoById(@PathVariable String id) {
+        Optional<Enemigo> enemigo = enemigoService.obtenerPorId(id);
+        return enemigo
+                .map(ResponseEntity::ok) //200 + enemigo
+                .orElse(ResponseEntity.notFound().build()); //404 no existe
+    } //Return Enemigo o 404 si no existe
 
     //Crea enemigos  (POST)
     @PostMapping("/enemigo")
