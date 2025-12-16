@@ -15,6 +15,7 @@ import java.util.function.Function;
 
 public interface EnemigoRepository extends MongoRepository<Enemigo, String> {
 
+    //Buscamos por nombre
     List<Enemigo> findByNombre(String user_name);
 
 

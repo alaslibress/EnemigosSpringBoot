@@ -36,10 +36,29 @@ public class EnemigosController {
                 .orElse(ResponseEntity.notFound().build()); //404 no existe
     } //Return Enemigo o 404 si no existe
 
+    //Vamos a buscar por nombre:
+    @GetMapping("/enemigo/buscar")
+    public List<Enemigo> buscarMedianteNombre(@RequestParam String nombre) {
+        return enemigoService.buscarPorNombre(nombre);
+    }
+
     //Crea enemigos  (POST)
     @PostMapping("/enemigo")
-    public Enemigo crearEnemigo(@RequestBody Enemigo enemigo) {
-        return enemigoService.guardar(enemigo);
+    public ResponseEntity<?> crearEnemigo(@RequestBody Enemigo enemigo) {
+        //Validar mínimo 3 caracteres
+        String error = enemigoService.validarEnemigo(enemigo);
+        if (error != null) {
+            return ResponseEntity.badRequest().body(error);
+        }
+
+        // Validar nombre único
+        if (enemigoService.existeNombre(enemigo.getNombre())) {
+            return ResponseEntity.badRequest().body("¿Por qué lanzó una excepción el programa?\n" +
+                    "Porque el nombre ya estaba duplicado y nadie lo quiso capturar. \uD83D\uDE04"); //Le he pedido el chiste a chatGPT...
+        }
+
+        Enemigo guardado = enemigoService.guardar(enemigo);
+        return ResponseEntity.ok(guardado);
     } //Return Enemigo creado
 
     //Actualiza un enemigo que ya existe (PUT)

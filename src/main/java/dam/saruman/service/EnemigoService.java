@@ -48,4 +48,25 @@ public class EnemigoService {
         }
         return false;
     }
+
+    //Validaciones:
+
+    //Comprobamos que el nombre sea único y no se repita
+    public boolean existeNombre(String nombre) {
+        List<Enemigo> encontrados = enemigoRepository.findByNombre(nombre); //Buscamos por nombre
+        return !encontrados.isEmpty();
+    }
+
+    //Comprobamos que el nombre tenga mínimo 3 caracteres
+    public String validarEnemigo(Enemigo enemigo) {
+        if (enemigo.getNombre() == null || enemigo.getNombre().trim().length() < 3) {
+            return "Ni tres letras tiene tu nombre...";
+        }
+        return null;
+    }
+
+    //Buscamos por nombre con este método
+    public List<Enemigo> buscarPorNombre(String nombre) {
+        return enemigoRepository.findByNombre(nombre);
+    }
 }

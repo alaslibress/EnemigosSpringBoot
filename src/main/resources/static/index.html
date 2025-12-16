@@ -6,9 +6,25 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<h1>
-    Lista enemigos
-</h1>
+<h1>Lista enemigos</h1>
+
+<section class="formulario-container">
+    <h2>Buscar enemigo</h2>
+    <form id="formBuscarEnemigo">
+        <section class="formGroup">
+            <label for="nombreBuscar">Nombre</label>
+            <input type="text" id="nombreBuscar" name="nombreBuscar" required>
+        </section>
+        <button type="submit" class="btn-primary">Buscar</button>
+        <button type="button" id="btnMostrarTodos" class="btn-secondary">Mostrar Todos</button>
+    </form>
+</section>
+
+<section class="botones-tabla">
+    <button type="button" id="btnOrdenar">Ordenar A-Z</button>
+    <button type="button" id="btnDescargarCSV">Descargar CSV</button>
+</section>
+
 <table id="enemigosTable" style="display:none;">
     <thead>
     <tr>

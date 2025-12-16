@@ -1,16 +1,21 @@
 document.addEventListener('DOMContentLoaded', cargarEnemigos);
 
+//Variable global
+let enemigosActuales = []; // Variable global para guardar los enemigos y ordenarlos
+
 async function cargarEnemigos(){
     try{
         const response = await fetch('/api/enemigo');
         const enemigos = await response.json();
         mostrarEnemigos(enemigos);
     }catch(error){
-        console.error("Error al cargar usuarios "+error)
+        console.error("Error al cargar a tus amigos políticos "+error)
     }
 }
 
-async function mostrarEnemigos(enemigos){
+function mostrarEnemigos(enemigos){
+    enemigosActuales = enemigos; // Guardar para ordenar después
+
     const tbody = document.getElementById('enemigosBody');
     const table = document.getElementById('enemigosTable');
 
@@ -33,7 +38,7 @@ async function mostrarEnemigos(enemigos){
     table.style.display = 'table';
 }
 
-// INSERTAR - CORREGIDO (faltaba el callback completo)
+// INSERTAR
 document.getElementById('formInsertarEnemigo').addEventListener('submit', async function(e) {
     e.preventDefault();
 
@@ -58,19 +63,20 @@ document.getElementById('formInsertarEnemigo').addEventListener('submit', async 
             })
         });
 
+        const texto = await response.text(); //Leer como texto primero
+
         if(response.ok){
-            const nuevoEnemigo = await response.json();
-            console.log('Enemigo creado:', nuevoEnemigo);
+            console.log('Enemigo creado (El país cada vez tambalea más):', texto);
             document.getElementById('formInsertarEnemigo').reset();
             await cargarEnemigos();
+            alert('Enemigo creado correctamente');
         }else{
-            const error = await response.text();
-            console.log(error);
-            alert('Error al crear enemigo');
+            //El servidor devuelve el mensaje de error como texto
+            alert('Error: ' + texto);
         }
     }catch (error){
         console.error(error);
-        alert('Error al crear enemigo');
+        alert('Error de conexión');
     } finally{
         btnEnviar.disabled = false;
         btnEnviar.textContent = 'Agregar Enemigos';
@@ -92,20 +98,19 @@ document.getElementById('formEliminarEnemigo').addEventListener('submit', async 
             method: 'DELETE'
         });
 
-        if(response.ok){
+        if(response.ok || response.status === 204){
             console.log('Enemigo eliminado correctamente');
             document.getElementById('formEliminarEnemigo').reset();
             await cargarEnemigos();
+            alert('Enemigo eliminado correctamente (Esto es un avance)');
         }else if(response.status === 404){
-            console.error('No se encontró un enemigo con ese ID');
             alert('No se encontró un enemigo con ese ID');
         }else{
-            console.error('Error al eliminar enemigo');
             alert('Error al eliminar enemigo');
         }
     }catch (error){
         console.error('Error al eliminar enemigo:', error);
-        alert('Error al eliminar enemigo');
+        alert('Error al eliminar enemigo (más dificil de eliminar que una plaga)');
     } finally{
         btnEliminar.disabled = false;
         btnEliminar.textContent = 'Eliminar';
@@ -153,9 +158,67 @@ document.getElementById('formActualizarEnemigo').addEventListener('submit', asyn
         }
     }catch (error){
         console.error('Error al actualizar enemigo:', error);
-        alert('Error al actualizar enemigo');
+        alert('Error al actualizar enemigo (Ya me quedo sin ideas para los chistes)');
     } finally{
         btnActualizar.disabled = false;
         btnActualizar.textContent = 'Actualizar';
     }
+});
+
+//BUSCAR POR NOMBRE
+document.getElementById('formBuscarEnemigo').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const nombre = document.getElementById('nombreBuscar').value.trim();
+
+    try {
+        const response = await fetch('/api/enemigo/buscar?nombre=' + encodeURIComponent(nombre));
+        const enemigos = await response.json();
+
+        if(enemigos.length === 0) {
+            alert('Ese nombre no existe (A lo mejor se ha perdido en los canales internos del partido junto a las pruebas de incriminación a paco salazar, junto con los mensajes de whatshapp de antonio navarro, o quizás con las denuncias de josé tomé...)');
+        } else {
+            mostrarEnemigos(enemigos);
+        }
+    } catch(error) {
+        console.error('Error al buscar:', error);
+        alert('Error al buscar enemigo');
+    }
+});
+
+//MOSTRAR TODOS (resetear búsqueda)
+document.getElementById('btnMostrarTodos').addEventListener('click', function() {
+    cargarEnemigos();
+});
+
+// ORDENAR ALFABÉTICAMENTE
+document.getElementById('btnOrdenar').addEventListener('click', function() {
+    // Copia el array y ordena por nombre (A-Z)
+    const ordenados = [...enemigosActuales].sort((a, b) => {
+        return a.nombre.localeCompare(b.nombre);
+    });
+    mostrarEnemigos(ordenados);
+});
+
+// DESCARGAR CSV
+document.getElementById('btnDescargarCSV').addEventListener('click', function() {
+    if(enemigosActuales.length === 0) {
+        alert('No hay datos para descargar, eso significa que la corrupción a acabado (ojalá)');
+        return;
+    }
+
+    // Cabeceras del CSV
+    let csv = 'ID,Nombre,Pais,Afiliacion\n';
+
+    // Añadir cada fila
+    enemigosActuales.forEach(enemigo => {
+        csv += `${enemigo.id},${enemigo.nombre},${enemigo.pais},${enemigo.afiliacion}\n`;
+    });
+
+    // Crear blob y descargar
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'enemigos.csv';
+    link.click();
 });
