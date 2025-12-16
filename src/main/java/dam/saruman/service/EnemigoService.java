@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+//LOGICA DE NEGOCIO MANEJADA POR SERVICE
+
 @Service
 public class EnemigoService {
     @Autowired

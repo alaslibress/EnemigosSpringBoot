@@ -41,6 +41,40 @@
     </form>
 </section>
 
+<section class="formulario-container">
+    <h2>Eliminar enemigo</h2>
+    <form id="formEliminarEnemigo">
+        <section class="formGroup">
+            <label for="idEliminar">ID del enemigo</label>
+            <input type="text" id="idEliminar" name="idEliminar" required>
+        </section>
+        <button type="submit" class="btn-danger">Eliminar</button>
+    </form>
+</section>
+
+<section class="formulario-container">
+    <h2>Actualizar enemigo</h2>
+    <form id="formActualizarEnemigo">
+        <section class="formGroup">
+            <label for="idActualizar">ID del enemigo</label>
+            <input type="text" id="idActualizar" name="idActualizar" required>
+        </section>
+        <section class="formGroup">
+            <label for="nombreActualizar">Nombre</label>
+            <input type="text" id="nombreActualizar" name="nombreActualizar" required>
+        </section>
+        <section class="formGroup">
+            <label for="paisActualizar">País</label>
+            <input type="text" id="paisActualizar" name="paisActualizar" required>
+        </section>
+        <section class="formGroup">
+            <label for="afiliacionActualizar">Afiliación</label>
+            <input type="text" id="afiliacionActualizar" name="afiliacionActualizar" required>
+        </section>
+        <button type="submit" class="btn-primary">Actualizar</button>
+    </form>
+</section>
+
 <script src="script.js"></script>
 </body>
 </html>
